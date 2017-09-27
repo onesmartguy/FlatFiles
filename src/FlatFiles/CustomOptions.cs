@@ -6,14 +6,14 @@ namespace FlatFiles
     /// <summary>
     /// Holds configuration settings for the FixedLengthParser class.
     /// </summary>
-    public sealed class FixedLengthOptions
+    public class CustomOptions
     {
         private OverflowTruncationPolicy truncationPolicy;
 
         /// <summary>
         /// Initializes a new instance of a FixedLengthParserOptions.
         /// </summary>
-        public FixedLengthOptions()
+        public CustomOptions()
         {
             FillCharacter = ' ';
             RecordSeparator = Environment.NewLine;
@@ -51,9 +51,9 @@ namespace FlatFiles
         /// </summary>
         public OverflowTruncationPolicy TruncationPolicy
         {
-            get 
-            { 
-                return truncationPolicy; 
+            get
+            {
+                return truncationPolicy;
             }
             set
             {
@@ -74,9 +74,9 @@ namespace FlatFiles
         /// Duplicates the options.
         /// </summary>
         /// <returns>The new options.</returns>
-        public FixedLengthOptions Clone()
+        public CustomOptions Clone()
         {
-            return (FixedLengthOptions)MemberwiseClone();
+            return (CustomOptions)MemberwiseClone();
         }
     }
 

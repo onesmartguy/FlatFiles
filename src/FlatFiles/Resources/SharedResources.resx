@@ -180,4 +180,7 @@
   <data name="InvalidColumnConversion" xml:space="preserve">
     <value>Failed to convert '{0}' to '{1}'. Column: {2}, Position: {3}.</value>
   </data>
+  <data name="RecordTooShort" xml:space="preserve">
+    <value>The record did not meet the length requirements specified in the schema. Record {0}.</value>
+  </data>
 </root>
