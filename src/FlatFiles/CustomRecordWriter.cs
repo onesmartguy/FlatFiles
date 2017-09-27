@@ -10,12 +10,16 @@ namespace FlatFiles
         private readonly TextWriter writer;
         private readonly CustomSchema schema;
         private readonly CustomOptions options;
+        private readonly string quoteString;
+        private readonly string doubleQuoteString;
 
         public CustomRecordWriter(TextWriter writer, CustomSchema schema, CustomOptions options)
         {
             this.writer = writer;
             this.schema = schema;
             this.options = options.Clone();
+            this.quoteString = String.Empty + options.Quote;
+            this.doubleQuoteString = String.Empty + options.Quote + options.Quote;
         }
 
         public CustomSchema Schema
@@ -35,11 +39,9 @@ namespace FlatFiles
                 throw new ArgumentException(SharedResources.WrongNumberOfValues, "values");
             }
             var formattedColumns = schema.FormatValues(values);
-            var fittedColumns = formattedColumns.Select((v, i) => fitWidth(schema.Windows[i], v));
-            foreach (string column in fittedColumns)
-            {
-                writer.Write(column);
-            }
+            var fittedColumns = formattedColumns.Select((v, i) => fitWidth(schema.Windows[i], escape(v)));
+            string joined = String.Join(options.Separator, fittedColumns);
+            writer.Write(joined);
         }
 
         public void WriteSchema()
@@ -96,6 +98,56 @@ namespace FlatFiles
             {
                 return value.PadLeft(window.Width, window.FillCharacter ?? options.FillCharacter);
             }
+        }
+        private string escape(string value)
+        {
+            if (needsEscaped(value))
+            {
+                return quoteString + value.Replace(quoteString, doubleQuoteString) + quoteString;
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        private bool needsEscaped(string value)
+        {
+            // Never escape null.
+            if (value == null)
+            {
+                return false;
+            }
+            if (options.QuoteBehavior == QuoteBehavior.AlwaysQuote)
+            {
+                return true;
+            }
+            // Don't escape empty strings.
+            if (value == String.Empty)
+            {
+                return false;
+            }
+            // Escape strings beginning or ending in whitespace.
+            if (Char.IsWhiteSpace(value[0]) || Char.IsWhiteSpace(value[value.Length - 1]))
+            {
+                return true;
+            }
+            // Escape strings containing the separator.
+            if (value.Contains(options.Separator))
+            {
+                return true;
+            }
+            // Escape strings containing the record separator.
+            if (value.Contains(options.RecordSeparator))
+            {
+                return true;
+            }
+            // Escape strings containing quotes.
+            if (value.Contains(quoteString))
+            {
+                return true;
+            }
+            return false;
         }
 
         public void WriteRecordSeparator()

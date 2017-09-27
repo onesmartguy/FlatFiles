@@ -9,12 +9,18 @@ namespace FlatFiles
     public class CustomOptions
     {
         private OverflowTruncationPolicy truncationPolicy;
+        private string separator;
+        private string recordSeparator;
 
         /// <summary>
         /// Initializes a new instance of a FixedLengthParserOptions.
         /// </summary>
         public CustomOptions()
         {
+            Separator = ",";
+            RecordSeparator = Environment.NewLine;
+            Quote = '"';
+            QuoteBehavior = QuoteBehavior.Default;
             FillCharacter = ' ';
             RecordSeparator = Environment.NewLine;
             truncationPolicy = OverflowTruncationPolicy.TruncateLeading;
@@ -29,6 +35,37 @@ namespace FlatFiles
         /// Gets or sets the string that indicates the end of a record.
         /// </summary>
         public string RecordSeparator { get; set; }
+
+        /// <summary>
+        /// Gets or sets the separator used to separate the columns.
+        /// </summary>
+        public string Separator
+        {
+            get
+            {
+                return separator;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException(SharedResources.EmptySeparator);
+                }
+                this.separator = value;
+            }
+        }
+
+   
+
+        /// <summary>
+        /// Gets or sets the character used to quote records containing special characters.
+        /// </summary>
+        public char Quote { get; set; }
+
+        /// <summary>
+        /// Gets or sets how FlatFiles will handle quoting values.
+        /// </summary>
+        public QuoteBehavior QuoteBehavior { get; set; }
 
         /// <summary>
         /// Gets or sets whether the first record in the source holds header information and should be skipped.

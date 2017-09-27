@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace FlatFiles
 {
+
     /// <summary>
     /// Defines the expected format of a fixed-length file record.
     /// </summary>
@@ -10,13 +11,13 @@ namespace FlatFiles
     {
         private readonly List<Window> windows;
         private int totalWidth;
-
         /// <summary>
         /// Initializes a new instance of a FixedLengthSchema.
         /// </summary>
         public CustomSchema()
         {
             windows = new List<Window>();
+   
         }
 
         /// <summary>

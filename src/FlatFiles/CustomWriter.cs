@@ -3,6 +3,9 @@ using System.IO;
 
 namespace FlatFiles
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CustomWriter : IWriter
     {
         private readonly CustomRecordWriter recordWriter;
@@ -58,15 +61,6 @@ namespace FlatFiles
             if (values == null)
             {
                 throw new ArgumentNullException("values");
-            }
-            if (isFirstLine)
-            {
-                if (recordWriter.Options.IsFirstRecordHeader)
-                {
-                    recordWriter.WriteSchema();
-                    recordWriter.WriteRecordSeparator();
-                }
-                isFirstLine = false;
             }
             recordWriter.WriteRecord(values);
             recordWriter.WriteRecordSeparator();
