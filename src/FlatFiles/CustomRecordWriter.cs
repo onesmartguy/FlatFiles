@@ -40,7 +40,7 @@ namespace FlatFiles
             }
             var formattedColumns = schema.FormatValues(values);
             var fittedColumns = formattedColumns.Select((v, i) => fitWidth(schema.Windows[i], escape(v)));
-            string joined = String.Join(options.Separator, fittedColumns);
+            string joined = String.Join(options.Separator, fittedColumns) + options.Separator;
             writer.Write(joined);
         }
 
@@ -115,6 +115,10 @@ namespace FlatFiles
         {
             // Never escape null.
             if (value == null)
+            {
+                return false;
+            }
+            if (!string.IsNullOrWhiteSpace(options.Separator))
             {
                 return false;
             }

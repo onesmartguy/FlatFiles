@@ -14,6 +14,11 @@ namespace FlatFiles
         /// <summary>
         /// FlatFiles will put quotes around all values.
         /// </summary>
-        AlwaysQuote = 1
+        AlwaysQuote = 1,
+        
+        /// <summary>
+        /// FlatFiles will put quotes around all values.
+        /// </summary>
+        NeverQuote = 2
     }
 }
